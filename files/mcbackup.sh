@@ -89,7 +89,7 @@ function purge() {
   fi
 
   shopt -s nullglob
-  LOCATION="${LOCAL_DESTINATION}/${REMOTE_SERVER}"
+  LOCATION="${LOCAL_DESTINATION}/${REMOTE_SERVER}/*"
 
   file_arr=(${LOCATION})
   CURRENT="${#file_arr[@]}"
