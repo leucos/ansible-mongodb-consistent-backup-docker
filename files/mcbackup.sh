@@ -74,7 +74,7 @@ function backup() {
   DOCKER_OPTS="-ti --rm -v ${LOCAL_DESTINATION}:/opt ${DOCKER_MCB_IMAGE} -H ${REMOTE_SERVER} -P ${REMOTE_PORT} -n ${REMOTE_SERVER} -l /opt/"
   logverbose "Executing ${DOCKER} run ${DOCKER_OPTS}"
 
-  ${DRY_RUN} || ${DOCKER} run ${DOCKER_OPTS}
+  ${DRY_RUN} || ${DOCKER} run ${DOCKER_OPTS} >> "${LOG_FILE}" 2>&1
 
   loginfo "Docker run exited with $?"
 
@@ -116,7 +116,7 @@ function parse() {
   ERROR_COUNT=0
   KEEP=0                  # keep everything by default
   LOCAL_DESTINATION=""
-  LOG_FILE=""
+  LOG_FILE="/dev/null"
   REMOTE_SERVER=""
   DOCKER=$(which docker 2> /dev/null) # find docker
   VERBOSE=false           # prints detailed information
