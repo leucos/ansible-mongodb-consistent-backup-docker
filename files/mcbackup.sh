@@ -95,7 +95,7 @@ function purge() {
   CURRENT="${#file_arr[@]}"
 
   # Remove "current" symlink and requested keep so we end up with count of directories to remove
-  COUNT=$((CURRENT - 1 - KEEP))
+  COUNT=$((CURRENT - KEEP))
 
   if [ $COUNT -gt 0 ]; then
     loginfo "Erasing $COUNT old backups, keeping ${KEEP}"
@@ -105,7 +105,7 @@ function purge() {
       ${DRY_RUN} || rm -rf "${LOCATION:?}/${i:?}"
     done
   else
-    loginfo "No backup to purge ($((CURRENT - 1 )) present, ${KEEP} to keep)"
+    loginfo "No backup to purge (${CURRENT} present, ${KEEP} to keep)"
   fi
 }
 
