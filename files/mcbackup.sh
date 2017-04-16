@@ -147,7 +147,7 @@ function parse() {
       s)
         REMOTE_SERVER="${OPTARG}"
         ;;
-      s)
+      p)
         REMOTE_PORT="${OPTARG}"
         ;;
       l)
