@@ -1,0 +1,33 @@
+- name: Gets docker image
+  docker_image:
+    name: timvaillancourt/mongodb_consistent_backup
+
+- name: Creates mongodb-consistent-backup log dir
+  file:
+    path: /var/log/mongodb-consistent-backup/
+    state: directory
+
+- name: Adds backup script
+  copy:
+    src: mcbackup.sh
+    dest: /usr/local/bin/mcbackup.sh
+    mode: 0777
+    owner: root
+    group: root
+
+- name: Adds backup cron jobs
+  cron:
+    name: "{{ item.name }}"
+    job: /usr/local/bin/mcbackup.sh -s {{ item.source }} -p {{ item.port }} -d {{ item.destination }} -k {{ item.keep | default(10) }} -l /var/log/mongodb-consistent-backup/{{ item.log | default("mcbackup.log") }}
+    day: "{{ item.day }}"
+    hour: "{{ item.hour }}"
+    minute: "{{ item.minute }}"
+  with_items: "{{ mcb_backup_crons }}"
+
+- name: Adds log rotation configuration
+  template:
+    src: mongodb-consistent-backup.logrotate.j2
+    dest: /etc/logrotate.d/mongodb-consistent-backup
+    mode: 0644
+    owner: root
+    group: root

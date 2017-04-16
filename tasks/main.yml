@@ -1,0 +1,10 @@
+- include: check_vars.yml
+  tags:
+    - mongodb-consistent-backup
+    - backup
+    - check
+
+- include: mongodb-consistent-backup-docker.yml
+  tags:
+    - mongodb-consistent-backup
+    - backup

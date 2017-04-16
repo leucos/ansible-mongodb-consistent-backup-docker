@@ -1,0 +1,10 @@
+mcb_backup_crons:
+  - name: Dev server
+    source: localhost
+    port: 27019
+    destination: /backup
+    keep: 3
+    day: "*"
+    hour: 5
+    minute: 15
+    log: dev.log

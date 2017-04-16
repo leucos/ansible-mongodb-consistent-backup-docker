@@ -1,0 +1,18 @@
+---
+galaxy_info:
+  author: Michel Blanc
+  description: Schedule mongodb cluster backups using mongodb-consistent-backup-docker in a container
+  company: devops.works
+  license: MIT
+  min_ansible_version: 1.9
+
+  platforms:
+    - name: Ubuntu
+      versions:
+       - trusty
+       - xenial
+
+  categories:
+    - system
+
+dependencies: []
