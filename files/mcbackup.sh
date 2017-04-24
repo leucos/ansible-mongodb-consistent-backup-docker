@@ -71,7 +71,7 @@ function validate() {
 function backup() {
   loginfo "Creating backup in ${LOCAL_DESTINATION}/${REMOTE_SERVER}"
 
-  DOCKER_OPTS="-ti --rm -v ${LOCAL_DESTINATION}:/opt ${DOCKER_MCB_IMAGE} -H ${REMOTE_SERVER} -P ${REMOTE_PORT} -n ${REMOTE_SERVER} -l /opt/"
+  DOCKER_OPTS="--rm -v ${LOCAL_DESTINATION}:/opt ${DOCKER_MCB_IMAGE} -H ${REMOTE_SERVER} -P ${REMOTE_PORT} -n ${REMOTE_SERVER} -l /opt/"
   logverbose "Executing ${DOCKER} run ${DOCKER_OPTS}"
 
   ${DRY_RUN} || ${DOCKER} run ${DOCKER_OPTS} >> "${LOG_FILE}" 2>&1
