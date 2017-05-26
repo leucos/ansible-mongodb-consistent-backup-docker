@@ -18,7 +18,7 @@
 - name: Adds backup cron jobs
   cron:
     name: "{{ item.name }}"
-    job: /usr/local/bin/mcbackup.sh -s {{ item.source }} -p {{ item.port }} -d {{ item.destination }} -k {{ item.keep | default(10) }} -l /var/log/mongodb-consistent-backup/{{ item.log | default("mcbackup.log") }} -I {{ item.influxurl | default("none) }} -D {{ item.influxdb | default("none) }}
+    job: /usr/local/bin/mcbackup.sh -s {{ item.source }} -p {{ item.port }} -d {{ item.destination }} -k {{ item.keep | default(10) }} -l /var/log/mongodb-consistent-backup/{{ item.log | default("mcbackup.log") }} -I {{ item.influxurl | default("none") }} -D {{ item.influxdb | default("none") }}
     day: "{{ item.day }}"
     hour: "{{ item.hour }}"
     minute: "{{ item.minute }}"
