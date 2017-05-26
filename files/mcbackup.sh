@@ -100,7 +100,7 @@ function purge() {
   if [ $COUNT -gt 0 ]; then
     loginfo "Erasing $COUNT old backups, keeping ${KEEP}"
     # shellcheck disable=SC2012
-    for i in $(ls "${LOCATION}" | head -$COUNT); do
+    for i in $(ls ${LOCATION} | head -$COUNT); do
       loginfo "Erasing ${i}"
       ${DRY_RUN} || rm -rf "${LOCATION:?}/${i:?}"
     done
