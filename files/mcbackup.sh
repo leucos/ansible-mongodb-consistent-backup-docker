@@ -58,7 +58,7 @@ function validate() {
 
   if [ ! -w "${LOCAL_DESTINATION}" ]; then
     logerror "Destination $LOCAL_DESTINATION does exist or is not writable"
-    exit 1    
+    exit 1
   fi
 
   re='^[0-9]+$'
@@ -109,6 +109,13 @@ function purge() {
   fi
 }
 
+function send_influxdb() {
+  if [ -n "${INFLUX_URL}" ] && [ -n "${INFLUX_DATABASE}" ]; then
+    curl -sX POST "${INFLUX_URL}/write?db=${INFLUX_DATABASE}&precision=s" \
+      --data-binary "event,host=$(hostname),type=mongo_backup value=1"
+  fi
+}
+
 # Parse arguments
 
 function parse() {
@@ -133,15 +140,17 @@ function parse() {
       "--log")         set -- "$@" "-l" ;;
       "--dry-run")     set -- "$@" "-n" ;;
       "--keep")        set -- "$@" "-k" ;;
+      "--influx-host") set -- "$@" "-I" ;;
+      "--influx-db")   set -- "$@" "-D" ;;
       *)               set -- "$@" "$arg"
 
     esac
   done
 
-  while getopts 'p:s:d:hvl:nh:k:' OPTION
+  while getopts 'p:s:d:hvl:nh:k:I:D:' OPTION
   do
     case $OPTION in
-      k) 
+      k)
         KEEP="${OPTARG}"
         ;;
       s)
@@ -152,9 +161,15 @@ function parse() {
         ;;
       l)
         LOG_FILE="${OPTARG}"
-        ;;      
+        ;;
       d)
         LOCAL_DESTINATION="${OPTARG}"
+        ;;
+      I)
+        INFLUX_URL="${OPTARG}"
+        ;;
+      D)
+        INFLUX_DATABASE="${OPTARG}"
         ;;
       n)
         DRY_RUN=true
@@ -162,7 +177,7 @@ function parse() {
       v)
         VERBOSE=true
         ;;
-      h)  
+      h)
         help
         exit 0
         ;;
@@ -174,5 +189,7 @@ parse "$@"
 validate
 backup
 purge
+
+if [ ${ERROR_COUNT} -eq 0 ]; then send_influxdb; fi
 
 loginfo "Backup completed with ${ERROR_COUNT} errors"
