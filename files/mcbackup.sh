@@ -110,7 +110,7 @@ function purge() {
 }
 
 function send_influxdb() {
-  if [ -n "${INFLUX_URL}" ] && [ -n "${INFLUX_DATABASE}" ]; then
+  if [ -n "${INFLUX_URL}" ] && [ -n "${INFLUX_DATABASE}" ] && [ "${INFLUX_URL}" != "none" ] && [ "${INFLUX_DATABASE}" != "none" ]; then
     curl -sX POST "${INFLUX_URL}/write?db=${INFLUX_DATABASE}&precision=s" \
       --data-binary "event,host=$(hostname),type=mongo_backup value=1"
   fi
